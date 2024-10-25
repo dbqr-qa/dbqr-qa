@@ -43,16 +43,12 @@ class EvaluationTestCase(unittest.TestCase):
         
         self.assertEqual(accuracy, 1.0)
 
-    def test_heuristic_contaminate(self):
+    def test_heuristic_noise(self):
         self.build_test_input()
 
-        with open(join(TEST_PATH, 'contaminate.json')) as file:
-            changes = json.load(file)
+        with open(join(TEST_PATH, 'answers.json')) as file:
+            self.answers = json.load(file)
         
-        for chat_id, items in changes.items():
-            for question_id, answer in items.items():
-                self.answers[chat_id][question_id] = answer
-
         accuracy, _ = evaluate(
             self.questions, self.answers, self.labels)
         

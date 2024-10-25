@@ -22,7 +22,6 @@ EVALUATORS = ('heuristic', 'gpt-binary', 'gpt-score')
 DEFAULT_EVALUATOR = 'heuristic'
 DEFAULT_GPT_MODEL = 'gpt-4o'
 DEFAULT_RETRY = 3
-DEFAULT_BACKUP_PATH = None
 
 
 def _match_heuristic(answer: VALUE_TYPES, label: VALUE_TYPES) -> bool:
@@ -49,7 +48,7 @@ def _match_heuristic(answer: VALUE_TYPES, label: VALUE_TYPES) -> bool:
             return False
 
 
-def evaluate_heuristic(answer: ANSWER_TYPES, label: ANSWER_TYPES) -> float:
+def evaluate_heuristic(answer: ANSWER_TYPES, label: ANSWER_TYPES) -> int:
     """
     Evaluate a single answer-label pair using the heuristic evaluator.
     For more information, visit https://dbqr-qa.github.io/quickstart.html#heuristic
@@ -85,7 +84,7 @@ def evaluate_heuristic(answer: ANSWER_TYPES, label: ANSWER_TYPES) -> float:
         return 1
 
     else:
-        return _match_heuristic(answer, label)
+        return int(_match_heuristic(answer, label))
 
 
 def init_gpt_messages() -> List[Dict[str, str]]:
@@ -200,7 +199,8 @@ def evaluate(
     model: str = DEFAULT_GPT_MODEL,
     retry: int = DEFAULT_RETRY,
     openai_key: Union[str, None] = None,
-    backup_path: Union[str, None] = DEFAULT_BACKUP_PATH) -> OUTPUT_TYPES:
+    backup_path: Union[str, None] = None,
+    is_notebook: bool = False) -> OUTPUT_TYPES:
 
     """
     Heuristic/GPT evaluator.
@@ -208,14 +208,17 @@ def evaluate(
 
     Parameters `model`, `retry`, `openai_key`, `backup_path` are not used for
     the heuristic evaluator.
+
+    The `is_notebook` parameter prevents tqdm from outputting 
+    a new progress bar for every question.
     """
 
     def display(
         items: Iterable, 
         desc: Union[str, None] = None, 
-        leave: bool = False) -> Iterable:
+        leave: bool = True) -> Iterable:
 
-        if evaluator == 'heuristic':
+        if evaluator == 'heuristic' or (is_notebook and not leave):
             return items
     
         else:

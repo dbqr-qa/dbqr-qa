@@ -26,26 +26,21 @@ def main(args: argparse.Namespace) -> None:
     practice = dataset.practice
 
     with open(args.key) as file:
-        api_key = file.read().strip()
+        openai_key = file.read().strip()
 
-    with open(join(args.data, 'tests', 'evaluation', 'contaminate.json')) as file:
-        changes = json.load(file)
-
-    answers = {}
-
-    for chat_id, chat in practice.labels.items():
-        answers[chat_id] = {}
-
-        for question_id, label in chat.items():
-            answers[chat_id][question_id] = label
-
-            if chat_id in changes and question_id in changes[chat_id]:
-                answers[chat_id][question_id] = changes[chat_id][question_id]
+    with open(join(args.data, 'tests', 'evaluation', 'answers.json')) as file:
+        answers = json.load(file)
 
     accuracy, _ = evaluate(practice.questions, answers, practice.labels,
-        args.evaluator, args.model, args.retry, api_key, args.backup)
+        args.evaluator, args.model, args.retry, openai_key, args.backup)
     
-    print('Accuracy:', accuracy)
+    print('Custom implementation test accuracy:', accuracy)
+
+    practice.answers = answers
+    accuracy, _ = practice.evaluate(args.evaluator, args.model, 
+        args.retry, openai_key, args.backup)
+
+    print('TableDataset implementation test accuracy:', accuracy)
 
 
 if __name__ == '__main__':

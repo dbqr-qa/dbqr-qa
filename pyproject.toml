@@ -1,3 +1,25 @@
 [build-system]
 requires = ["setuptools"]
 build-backend = "setuptools.build_meta"
+
+[project]
+name = "dbqrqa"
+version = "0.1.1"
+description = "A Question Answering Dataset on a Hybrid of Database Querying and Reasoning"
+readme = "README.md"
+license = {file = "LICENSE"}
+dependencies = [
+    "numpy",
+    "openai == 1.43.1",
+    "pandas",
+    "tqdm"
+]
+authors = [
+    {name = "Rungsiman Nararatwong", email = "rungsiman@gmail.com"}
+]
+
+[project.urls]
+Homepage = "https://dbqr-qa.github.io"
+Documentation = "https://dbqr-qa.github.io/quickstart.html"
+Repository = "https://github.com/dbqr-qa/dbqr-qa"
+Issues = "https://github.com/dbqr-qa/dbqr-qa/issues"
