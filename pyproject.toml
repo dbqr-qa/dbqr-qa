@@ -4,7 +4,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "dbqrqa"
-version = "0.1.1"
+version = "0.1.0"
 description = "A Question Answering Dataset on a Hybrid of Database Querying and Reasoning"
 readme = "README.md"
 license = {file = "LICENSE"}
