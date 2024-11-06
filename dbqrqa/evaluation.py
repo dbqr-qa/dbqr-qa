@@ -46,6 +46,9 @@ def _match_heuristic(answer: VALUE_TYPES, label: VALUE_TYPES) -> bool:
 
         except (ValueError, TypeError):
             return False
+    
+    else:
+        return False
 
 
 def evaluate_heuristic(answer: ANSWER_TYPES, label: ANSWER_TYPES) -> int:
